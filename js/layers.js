@@ -3,7 +3,7 @@ addLayer("o", {
     symbol: "1", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(1),
     }},
     color: "#4BDC13",
@@ -22,9 +22,9 @@ addLayer("o", {
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "T", description: "O: Reset for 1-points", onPress(o){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "", description: "", onPress(o){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return false},
 
   
 
@@ -68,7 +68,7 @@ addLayer("t", {
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "T", description: "T: Reset for 2-points", onPress(t){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "t", description: "t: Reset for 2-points", onPress(t){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
 
@@ -127,12 +127,20 @@ addLayer("t", {
         21: {  title: "there is always a catch",
     description: "unlock a new layer, but disable upgrade 15",
     cost: new Decimal(1013),
-      unlocked() { return hasUpgrade('t', 15) && !hasUpgrade('f',11) }, 
+      unlocked() { return hasUpgrade('t', 15) && !hasUpgrade('f',11) },
+      
+        },
+      
+      22: {  title: "no catch this time",
+    description: "multiply point production by 3",
+    cost: new Decimal(11),
+      unlocked() { return hasUpgrade('t', 16) && hasUpgrade('f',11) }, 
     
 
         },
     },
-})
+  },
+)
 
 
 addLayer("f", {
@@ -144,7 +152,7 @@ addLayer("f", {
 		points: new Decimal(0),
     }},
     color: "#4BDC13",
-    requires: new Decimal(1), // Can be a function that takes requirement increases into account
+    requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "3-points", // Name of prestige currency
     baseResource: "2-points", // Name of resource prestige is based on
     baseAmount() {return player.t.points}, // Get the current amount of baseResource
@@ -159,7 +167,7 @@ addLayer("f", {
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "T", description: "O: Reset for 1-points", onPress(o){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "f", description: "f: Reset for 3-points", onPress(f){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return hasUpgrade('t', 21) || hasUpgrade('f', 11) || player.f.points > 0  },
 

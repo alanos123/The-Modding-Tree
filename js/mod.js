@@ -12,8 +12,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.01",
+	name: "prime-test",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -52,9 +52,11 @@ function getPointGen() {
 	 
 	 if (hasUpgrade('t', 14)) if (player.points > 0)  gain = gain.times(player.points.pow(0.2));
 	  
-	 if (hasUpgrade('t', 15)) if (player.t.points > 0) if(!hasUpgrade('t',21)) if(!player.f.points > 0)  gain = gain.times(player.t.points);
+	 if (hasUpgrade('t', 15)) if (player.t.points > 0) if (!hasUpgrade('t',21)) gain = gain.times(player.t.points);
 	
 	 if (hasUpgrade('t', 16)) if (player.t.points > 0) gain = gain.times(player.t.points.pow(0.3));
+
+	 if (hasUpgrade('t', 22)) gain = gain.times(3);
 	  
 	 if (hasUpgrade('o', 11)) gain = gain.times(100000000000000000000);
 	return gain
@@ -70,7 +72,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return false
 }
 
 
