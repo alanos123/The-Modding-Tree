@@ -3,11 +3,11 @@ addLayer("1", {
     symbol: "1", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: false,
+        unlocked: true,
 		points: new Decimal(1),
     }},
     color: "#4BDC13",
-    requires: new Decimal(1000000000), // Can be a function that takes requirement increases into account
+    requires: new Decimal(1), // Can be a function that takes requirement increases into account
     resource: "1-points", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -24,7 +24,18 @@ addLayer("1", {
     hotkeys: [
         {key: "1", description: "O: Reset for 1-points", onPress(o){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return false}
+    layerShown(){return true},
+
+  
+
+
+    upgrades: { 11: {  title: "Test",
+    description: "Bajillion points",
+    cost: new Decimal(1),
+    
+
+        },
+    }
     
     
     
@@ -60,6 +71,8 @@ addLayer("2", {
         {key: "2", description: "T: Reset for 2-points", onPress(t){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+
+   
     
     upgrades: { 11: {  title: "Hello",
     description: "Begin the game",
@@ -77,5 +90,20 @@ addLayer("2", {
 
         },
 
+    
+    13: {  title: "Prime power",
+    description: "raise your point production to the 2nd power",
+    cost: new Decimal(3),
+      unlocked() { return hasUpgrade('2', 12) }, 
+    
+
+        },
+        14: {  title: "I'm out of upgrade names",
+    description: "points boost themselves",
+    cost: new Decimal(5),
+      unlocked() { return hasUpgrade('2', 13) }, 
+    
+
+        },
     },
 })

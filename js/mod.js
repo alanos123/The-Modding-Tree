@@ -46,6 +46,9 @@ function getPointGen() {
 	let gain = new Decimal(0)
 	 if (hasUpgrade('2', 11)) gain = gain.add(1);
 	 if (hasUpgrade('2', 12)) gain = gain.times(2);
+	 if (hasUpgrade('2', 13)) gain = gain.pow(2);
+	 if (hasUpgrade('2', 14)) if (player.points > 0)  gain = gain.times(player.points.pow(0.2));
+	 if (hasUpgrade('1', 11)) gain = gain.times(100000000000000000000);
 	return gain
 }
 
