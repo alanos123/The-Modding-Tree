@@ -12,14 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.01",
-	name: "prime-test",
+	num: "0.02",
+	name: "3 layered",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.2</h3><br>
+		- new upgrades.<br>
+		- new layer.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -77,7 +77,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return false
+	return hasUpgrade('i', 13)
 }
 
 

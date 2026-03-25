@@ -24,7 +24,7 @@ addLayer("o", {
     hotkeys: [
         {key: "", description: "", onPress(o){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return false},
 
   
 
@@ -58,13 +58,17 @@ addLayer("t", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.3, // Prestige currency exponent
+    exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
 
         if (hasUpgrade('f', 12)) mult = mult.times(3);
 
         if (hasUpgrade('t', 23)) mult = mult.times(player.points.pow(0.2));
+
+        if (hasUpgrade('t', 25)) mult = mult.times(player.f.points);
+
+        if (hasUpgrade('t', 26)) mult = mult.pow(2);
         
         return mult
     },
@@ -75,7 +79,7 @@ addLayer("t", {
     hotkeys: [
         {key: "t", description: "t: Reset for 2-points", onPress(t){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return!hasUpgrade('f',15) && player.i.points < 1 && !hasUpgrade('i',11) },
 
    
     
@@ -160,14 +164,31 @@ addLayer("t", {
     
 
         },
+
+
+        25: {  title: "getting close",
+    description: "multiply 2-points by 3-points",
+    cost: new Decimal(3001),
+      unlocked() { return hasUpgrade('t', 24) && hasUpgrade('f',14) },
     
     
+        },
+    
+         26: {  title: "2 good 2 be 2rue^2",
+    description: "square 2-points",
+    cost: new Decimal(10007),
+      unlocked() { return hasUpgrade('t', 25) && hasUpgrade('f',14) },
     
     
+        },
     
-    
+
     },
   },
+
+
+
+
 )
 
 
@@ -177,7 +198,7 @@ addLayer("f", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(6),
+		points: new Decimal(0),
     }},
     color: "#00d9ff",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -197,7 +218,11 @@ addLayer("f", {
     hotkeys: [
         {key: "f", description: "f: Reset for 3-points", onPress(f){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return hasUpgrade('t', 21) || hasUpgrade('f', 11) || player.f.points > 0  },
+    layerShown(){
+        return ((hasUpgrade('t', 21) && !hasUpgrade('f',15) 
+        || hasUpgrade('f', 11) && !hasUpgrade('f',15) 
+        || player.f.points > 0 && !hasUpgrade('f',15)) && player.i.points < 1)&& !hasUpgrade('i',11)
+         },
 
     
 
@@ -225,8 +250,102 @@ addLayer("f", {
     
     },
     
+    14: {  title: "Almost there",
+    description: "Unlock new upgrades in layer 2 ... again",
+    cost: new Decimal(4),
+    unlocked() { return hasUpgrade('f', 13)},
+
     
+    },
+
+
+    15: {  title: "Here it is",
+    description: "Combine 2 and 3 to create a new layer",
+    cost: new Decimal(5),
+    unlocked() { return hasUpgrade('f', 14)},
+
+    
+    },
+  
+ 
   },
+    
+
+        
+
+    },
+
+
+)
+addLayer("i", {
+    name: "5-points", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "5", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#ff00ff",
+    requires: new Decimal(1), // Can be a function that takes requirement increases into account
+    resource: "5-points", // Name of prestige currency
+    baseResource: "2-points", // Name of resource prestige is based on
+    baseAmount() {return player.t.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1000000000000000000000, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+
+    passiveGeneration() {
+        let passive = new Decimal(0)
+        
+    
+        if (hasUpgrade('i', 11)) passive = passive.add(1);
+        
+        if (hasUpgrade('i', 12)) passive = passive.times(2);
+        
+        return passive
+    },
+    row: 3, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "i", description: "i", onPress(i){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return hasUpgrade('f',15) || player.i.points > 0},
+
+  
+     
+    upgrades: { 11: {  title: "Generation",
+    description: "Start generating 5-points",
+    cost: new Decimal(1),
+    
+
+        },
+
+
+        12: {  title: "Faster!",
+    description: "Multiply 5-point generation by 2",
+    cost: new Decimal(11),
+    
+
+        },
+
+
+         13: {  title: "Finish!",
+    description: "End the game",
+    cost: new Decimal(23),
+    
+
+        },
+
+
+    },
+    
+    
+    
     
 
         
