@@ -44,7 +44,10 @@ function getPointGen() {
 		return new Decimal(0)
         
 	let gain = new Decimal(0)
-	 if (hasUpgrade('t', 11)) gain = gain.add(1);
+	 
+	if (hasUpgrade('t', 24)) gain = gain.add(1);
+	
+	if (hasUpgrade('t', 11)) gain = gain.add(1);
 	 
 	 if (hasUpgrade('t', 12)) gain = gain.times(2);
 	 
@@ -57,6 +60,8 @@ function getPointGen() {
 	 if (hasUpgrade('t', 16)) if (player.t.points > 0) gain = gain.times(player.t.points.pow(0.3));
 
 	 if (hasUpgrade('t', 22)) gain = gain.times(3);
+
+	 if (hasUpgrade('f', 12)) gain = gain.times(3);
 	  
 	 if (hasUpgrade('o', 11)) gain = gain.times(100000000000000000000);
 	return gain
